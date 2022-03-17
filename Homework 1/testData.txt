@@ -1,0 +1,13 @@
+Tom Dick Harry
+Larry Curly Mo
+Shrek Donkey Fionna
+Mando
+Tom Larry Mo Shrek
+Donkey Mando Mo
+Fionna Tom Larry Donkey Mando
+Bubbles Julian Ricky
+Tom Bubbles Mo
+Shrek Julian Larry
+Fionna Ricky Donkey
+Mando Tom Mo
+Julian Mando Dick
