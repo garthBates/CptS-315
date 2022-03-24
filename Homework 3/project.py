@@ -5,6 +5,8 @@
 # Date Completed: 4/5/2022
 ##############################
 
+trainingCookieMessages = "../Homework 3/fortune-cookie-data/traindata.txt"
+trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels/txt"
 
 ################################################################ Main ################################################################
 
