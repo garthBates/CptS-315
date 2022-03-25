@@ -25,9 +25,27 @@ def cleanMessageList(messages, inputFile):
     stops = fileRead.read().splitlines()
     fileRead.close()
 
+    cleanList = []    
+    for message in messages:
+        for stop in stops:
+            #cleanList.append(cleanMessage(message, stop))
+            message = cleanMessage(message, stop)
+            #print(message)
+        cleanList.append(message)
+
+    return cleanList
+
 def cleanMessage(message, stop):
-    clean = message.replace(stop, '')
-    return clean
+    #print(stop)
+    subString = message.split(" ")
+    if stop not in subString:
+        return message
+    else:
+        #subString = message.split(" ")
+        #subString.remove(str(stop))
+        subString = list(filter((stop).__ne__, subString))
+        clean = ' '.join(subString)
+        return clean
 
 
 
@@ -38,7 +56,9 @@ def main():
     messageList = populateMessageList(trainingCookieMessages)
     #print(messageList)
 
-    print(cleanMessage("a new voyage will fill your life with untold memories", 'a'))
+    #cleanMessage("a new voyage will fill your life with untold memories", 'a')
+    messageList = cleanMessageList(messageList, stopWords)
+    print(messageList)
 
 
 if __name__ == "__main__":
