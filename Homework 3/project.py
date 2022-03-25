@@ -15,19 +15,31 @@ messageList = []            #A list of all the messages. Used to clean messages 
 ############################################################ Pre-Processing ##########################################################
 def populateMessageList(inputFile):
     fileRead = open(inputFile, 'r')
-    messages = fileRead.readlines()
+    messages = fileRead.read().splitlines()
     fileRead.close()
 
     return messages
     
+def cleanMessageList(messages, inputFile):
+    fileRead = open(inputFile, 'r')
+    stops = fileRead.read().splitlines()
+    fileRead.close()
+
+def cleanMessage(message, stop):
+    clean = message.replace(stop, '')
+    return clean
+
+
 
 
 ################################################################ Main ################################################################
 
 def main():
     messageList = populateMessageList(trainingCookieMessages)
+    #print(messageList)
 
-    print(messageList)
+    print(cleanMessage("a new voyage will fill your life with untold memories", 'a'))
+
 
 if __name__ == "__main__":
     main()
