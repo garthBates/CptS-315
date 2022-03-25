@@ -27,10 +27,21 @@ def uniqueWords(inputFile):
     fileRead.close()
 
     inWords = contents.split()
-    inWords = set(inWords)
+    inWords = list(set(inWords))
 
     return inWords
 
+def cleanWordList(wList, inputFile):
+    fileRead = open(inputFile, 'r')
+    stops = fileRead.read().splitlines()
+    fileRead.close()
+
+    for stop in stops:
+        if stop in wList:
+            wList.remove(stop)
+
+    wList.sort()
+    return wList
 
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
@@ -64,8 +75,9 @@ def cleanMessage(message, stop):
 
 def main():
     messageList = populateMessageList(trainingCookieMessages)
-    print(messageList)
+    #print(messageList)
     wordList = uniqueWords(trainingCookieMessages)
+    wordList = cleanWordList(wordList, stopWords)
     print(wordList)
 
 
