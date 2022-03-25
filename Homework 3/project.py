@@ -11,6 +11,7 @@ trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels/txt"
 
 trainingSetsDict = {}       #{phrase: label}
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
+wordList = []               #A list of all unique words in the messages with the stop words removed.
 
 ############################################################ Pre-Processing ##########################################################
 def populateMessageList(inputFile):
@@ -20,6 +21,18 @@ def populateMessageList(inputFile):
 
     return messages
     
+def uniqueWords(inputFile):
+    fileRead = open(inputFile, 'r')
+    contents = fileRead.read()
+    fileRead.close()
+
+    inWords = contents.split()
+    inWords = set(inWords)
+
+    return inWords
+
+
+### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
     fileRead = open(inputFile, 'r')
     stops = fileRead.read().splitlines()
@@ -28,24 +41,21 @@ def cleanMessageList(messages, inputFile):
     cleanList = []    
     for message in messages:
         for stop in stops:
-            #cleanList.append(cleanMessage(message, stop))
             message = cleanMessage(message, stop)
-            #print(message)
         cleanList.append(message)
 
     return cleanList
 
 def cleanMessage(message, stop):
-    #print(stop)
     subString = message.split(" ")
     if stop not in subString:
         return message
     else:
-        #subString = message.split(" ")
-        #subString.remove(str(stop))
         subString = list(filter((stop).__ne__, subString))
         clean = ' '.join(subString)
         return clean
+### End Usless Functions
+
 
 
 
@@ -54,11 +64,9 @@ def cleanMessage(message, stop):
 
 def main():
     messageList = populateMessageList(trainingCookieMessages)
-    #print(messageList)
-
-    #cleanMessage("a new voyage will fill your life with untold memories", 'a')
-    messageList = cleanMessageList(messageList, stopWords)
     print(messageList)
+    wordList = uniqueWords(trainingCookieMessages)
+    print(wordList)
 
 
 if __name__ == "__main__":
