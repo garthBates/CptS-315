@@ -16,6 +16,7 @@ messageList = []            #A list of all the messages. Used to clean messages 
 wordList = []               #A list of all unique words in the messages with the stop words removed.
 vectorList = []             #A list of all the vectors of size M, for each message
 trainedVector = []          #A vector containing all the trained weights after learning algorithm
+missList = []               #stores the count of misses for each iter. missList[0] will hold the total misses for iter 1 and so on
 
 learningRate = 1            #For Online Binary-Classifier Learning Alg.
 
@@ -101,8 +102,11 @@ def onlineBinaryClassifierLearning(tList, vList, wList, tVector, iters):
     for word in wList:
         tVector.append(0)
 
+    
+
     w = np.array(tVector)
     for i in range(iters):                                              #for each training iteration itr ∈ {1, 2, · · · , T } do
+        misses = 0
         for sets in tList:                                              #   for each training example (xt, yt) ∈ D do
             #print(sets[0])
             xSubT = np.array(sets[0])
@@ -110,8 +114,10 @@ def onlineBinaryClassifierLearning(tList, vList, wList, tVector, iters):
             if yHat <= 0:                                               #       if mistake then
                 ySubT = np.array(sets[1])
                 w = w + learningRate * (ySubT * xSubT)                  #           w = w + η · yt · xt // update the weights
+                misses += 1
                 #w = (ySubT * xSubT)
                 #print(w)
+        missList.append(misses)
     return w
 
 
@@ -131,6 +137,7 @@ def main():
 
     finalWeights = onlineBinaryClassifierLearning(trainingSetsList, vectorList, wordList, trainedVector, 20)
     print(finalWeights)
+    print(missList)
 
 
 
