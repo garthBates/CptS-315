@@ -5,11 +5,13 @@
 # Date Completed: 4/5/2022
 ##############################
 
+import numpy as np
+
 stopWords = "../Homework 3/fortune-cookie-data/stoplist.txt"
 trainingCookieMessages = "../Homework 3/fortune-cookie-data/traindata.txt"
 trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels/txt"
 
-trainingSetsDict = {}       #{phrase: label}
+trainingSetsList = []       #A list of tuples (vector, label) containing all message vectors and their label
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
 wordList = []               #A list of all unique words in the messages with the stop words removed.
 vectorList = []             #A list of all the vectors of size M, for each message
@@ -86,11 +88,17 @@ def cleanMessage(message, stop):
 ### End Usless Functions
 
 ############################################################ Classification ##########################################################
+
+
+
 def onlineBinaryClassifierLearning(mList, vList, wList, tVector, iters):
+    #Initialze the weights w=0
     for word in wList:
         tVector.append(0)
 
-    print(len(tVector))
+    #for i in range(iters):
+
+
 
 
 
