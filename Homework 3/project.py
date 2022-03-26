@@ -96,7 +96,7 @@ def buildTrainingetList(tList, vList, infile):
     for i in range(len(vList)):
         tList.append((vList[i], labels[i]))
 
-def onlineBinaryClassifierLearning(mList, vList, wList, tVector, iters):
+def onlineBinaryClassifierLearning(tList, vList, wList, tVector, iters):
     #Initialze the weights w=0
     for word in wList:
         tVector.append(0)
@@ -117,9 +117,9 @@ def main():
     buildVectorList(wordList, vectorList, messageList)
 
     buildTrainingetList(trainingSetsList, vectorList, trainingCookieLabels)
-    print(trainingSetsList)
+    #print(trainingSetsList)
 
-    #onlineBinaryClassifierLearning(messageList, vectorList, wordList, trainedVector, learningRate)
+    onlineBinaryClassifierLearning(trainingSetsList, vectorList, wordList, trainedVector, learningRate)
 
 
 
