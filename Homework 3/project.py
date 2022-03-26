@@ -94,7 +94,7 @@ def buildTrainingetList(tList, vList, infile):
     fileRead.close()
 
     for i in range(len(vList)):
-        tList.append((vList[i], labels[i]))
+        tList.append((vList[i], int(labels[i])))
 
 def onlineBinaryClassifierLearning(tList, vList, wList, tVector, iters):
     #Initialze the weights w=0
@@ -104,11 +104,14 @@ def onlineBinaryClassifierLearning(tList, vList, wList, tVector, iters):
     w = np.array(tVector)
     for i in range(iters):                                              #for each training iteration itr ∈ {1, 2, · · · , T } do
         for sets in tList:                                              #   for each training example (xt, yt) ∈ D do
+            #print(sets[0])
             xSubT = np.array(sets[0])
             yHat = xSubT.dot(w)                                         #       yHat = sign(w · xt) // predict using the current weights
-            if yHat <0:                                                 #       if mistake then
+            if yHat <= 0:                                               #       if mistake then
                 ySubT = np.array(sets[1])
-                w = w + learningRate * ySubT * xSubT                    #           w = w + η · yt · xt // update the weights
+                w = w + learningRate * (ySubT * xSubT)                  #           w = w + η · yt · xt // update the weights
+                #w = (ySubT * xSubT)
+                #print(w)
     return w
 
 
@@ -124,6 +127,7 @@ def main():
     buildVectorList(wordList, vectorList, messageList)
 
     buildTrainingetList(trainingSetsList, vectorList, trainingCookieLabels)
+    #print(trainingSetsList)
 
     finalWeights = onlineBinaryClassifierLearning(trainingSetsList, vectorList, wordList, trainedVector, 20)
     print(finalWeights)
