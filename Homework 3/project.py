@@ -12,6 +12,7 @@ trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels/txt"
 trainingSetsDict = {}       #{phrase: label}
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
 wordList = []               #A list of all unique words in the messages with the stop words removed.
+vectorList = []             #A list of all the vectors of size M, for each message
 
 ############################################################ Pre-Processing ##########################################################
 def populateMessageList(inputFile):
@@ -42,6 +43,15 @@ def cleanWordList(wList, inputFile):
 
     wList.sort()
     return wList
+
+def buildVector(wList, message):
+    vector = []
+    for word in wList:
+        if word not in message:
+            vector.append(0)
+        else:
+            vector.append(1)
+    return vector
 
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
@@ -75,10 +85,10 @@ def cleanMessage(message, stop):
 
 def main():
     messageList = populateMessageList(trainingCookieMessages)
-    #print(messageList)
     wordList = uniqueWords(trainingCookieMessages)
     wordList = cleanWordList(wordList, stopWords)
-    print(wordList)
+
+    print(buildVector(wordList, messageList[0]))
 
 
 if __name__ == "__main__":
