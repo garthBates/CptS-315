@@ -13,6 +13,9 @@ trainingSetsDict = {}       #{phrase: label}
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
 wordList = []               #A list of all unique words in the messages with the stop words removed.
 vectorList = []             #A list of all the vectors of size M, for each message
+trainedVector = []          #A vector containing all the trained weights after learning algorithm
+
+learningRate = 1            #For Online Binary-Classifier Learning Alg.
 
 ############################################################ Pre-Processing ##########################################################
 def populateMessageList(inputFile):
@@ -56,8 +59,7 @@ def buildVector(wList, message):
 def buildVectorList(wList, vList, mList):
     for message in mList:
         vList.append(buildVector(wList, message))
-    
-    #return vList
+
 
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
@@ -83,7 +85,12 @@ def cleanMessage(message, stop):
         return clean
 ### End Usless Functions
 
+############################################################ Classification ##########################################################
+def onlineBinaryClassifierLearning(mList, vList, wList, tVector, iters):
+    for word in wList:
+        tVector.append(0)
 
+    print(len(tVector))
 
 
 
@@ -95,6 +102,8 @@ def main():
     wordList = cleanWordList(wordList, stopWords)
 
     buildVectorList(wordList, vectorList, messageList)
+
+    onlineBinaryClassifierLearning(messageList, vectorList, wordList, trainedVector, learningRate)
 
 
 
