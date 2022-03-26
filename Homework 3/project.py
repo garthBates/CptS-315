@@ -53,6 +53,12 @@ def buildVector(wList, message):
             vector.append(1)
     return vector
 
+def buildVectorList(wList, vList, mList):
+    for message in mList:
+        vList.append(buildVector(wList, message))
+    
+    #return vList
+
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
     fileRead = open(inputFile, 'r')
@@ -88,7 +94,8 @@ def main():
     wordList = uniqueWords(trainingCookieMessages)
     wordList = cleanWordList(wordList, stopWords)
 
-    print(buildVector(wordList, messageList[0]))
+    buildVectorList(wordList, vectorList, messageList)
+
 
 
 if __name__ == "__main__":
