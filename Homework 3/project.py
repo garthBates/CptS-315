@@ -9,7 +9,7 @@ import numpy as np
 
 stopWords = "../Homework 3/fortune-cookie-data/stoplist.txt"
 trainingCookieMessages = "../Homework 3/fortune-cookie-data/traindata.txt"
-trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels/txt"
+trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels.txt"
 
 trainingSetsList = []       #A list of tuples (vector, label) containing all message vectors and their label
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
@@ -88,8 +88,13 @@ def cleanMessage(message, stop):
 ### End Usless Functions
 
 ############################################################ Classification ##########################################################
+def buildTrainingetList(tList, vList, infile):
+    fileRead = open(infile, 'r')
+    labels = fileRead.read().splitlines()
+    fileRead.close()
 
-
+    for i in range(len(vList)):
+        tList.append((vList[i], labels[i]))
 
 def onlineBinaryClassifierLearning(mList, vList, wList, tVector, iters):
     #Initialze the weights w=0
@@ -111,7 +116,10 @@ def main():
 
     buildVectorList(wordList, vectorList, messageList)
 
-    onlineBinaryClassifierLearning(messageList, vectorList, wordList, trainedVector, learningRate)
+    buildTrainingetList(trainingSetsList, vectorList, trainingCookieLabels)
+    print(trainingSetsList)
+
+    #onlineBinaryClassifierLearning(messageList, vectorList, wordList, trainedVector, learningRate)
 
 
 
