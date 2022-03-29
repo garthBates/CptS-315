@@ -7,6 +7,8 @@
 
 import numpy as np
 
+outFile = "../Homework 3/output.txt"
+
 #Cookie Files
 stopWords = "../Homework 3/fortune-cookie-data/stoplist.txt"
 trainingCookieMessages = "../Homework 3/fortune-cookie-data/traindata.txt"
@@ -23,8 +25,9 @@ testingVectorList = []      #A list of all the vectors of size M, for each messa
 trainedVector = []          #A vector containing all the trained weights after learning algorithm
 missList = []               #stores the count of misses for each iter. missList[0] will hold the total misses for iter 1 and so on
 cookieWeightsLives = []     #A list of tuples (weight[i], c[i], iteration) where i is the index in the list
+iterationWeights = []       #A list of the final weight after each iteration on the training alg.
 
-learningRate = 1            #For Online Binary-Classifier Learning Alg.
+learningRate = 1            #For Online Binary-Classifier Learning Alg. index 0 is iteration 1 index 19 is iteration 20
 
 ############################################################ Pre-Processing ##########################################################
 def populateMessageList(inputFile):
@@ -124,6 +127,7 @@ def onlineBinaryClassifierLearning(tList, wList, tVector, iters):
             else:
                 lives += 1
         missList.append(misses)
+        iterationWeights.append(w)
     return w
 
 
@@ -141,6 +145,11 @@ def onlineBinaryClassifierTesting(tVector, iters, tList):
     return accuracy
 
 
+def reportResult(cookieTestAcc, cookieTrainAcc):
+    output = open(outFile, 'w')
+
+    for i in range(len(missList)):
+        output.write(str(missList[i]) + "\n")
 
 
 ################################################################ Main ################################################################
@@ -156,7 +165,7 @@ def main():
     finalCookieWeights = onlineBinaryClassifierLearning(trainingSetsList, wordList, trainedVector, 20)
     print(finalCookieWeights)
     print(missList)
-    print(len(cookieWeightsLives))
+    #print(len(cookieWeightsLives))
     cookieTestAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
     print(cookieTestAccuracy[0])
 
@@ -168,8 +177,10 @@ def main():
     cookieTrainingAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, testingSetsList)
     print(cookieTrainingAccuracy[0])
 
-    print(cookieWeightsLives)
+    #print(cookieWeightsLives)
+    #print(len(iterationWeights))
 
+    reportResult(cookieTestAccuracy, cookieTrainingAccuracy)
 
 
 if __name__ == "__main__":
