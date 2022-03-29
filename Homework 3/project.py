@@ -7,14 +7,19 @@
 
 import numpy as np
 
+#Cookie Files
 stopWords = "../Homework 3/fortune-cookie-data/stoplist.txt"
 trainingCookieMessages = "../Homework 3/fortune-cookie-data/traindata.txt"
 trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels.txt"
+testingCookieMessages = "../Homework 3/fortune-cookie-data/testdata.txt"
+testingCookieLabels = "../Homework 3/fortune-cookie-data/testlabels.txt"
 
 trainingSetsList = []       #A list of tuples (vector, label) containing all message vectors and their label
+testingSetsList = []        #A list of tuples (vector, label) containing all message vectors and their label
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
 wordList = []               #A list of all unique words in the messages with the stop words removed.
-vectorList = []             #A list of all the vectors of size M, for each message
+trainingVectorList = []     #A list of all the vectors of size M, for each message
+testingVectorList = []      #A list of all the vectors of size M, for each message
 trainedVector = []          #A vector containing all the trained weights after learning algorithm
 missList = []               #stores the count of misses for each iter. missList[0] will hold the total misses for iter 1 and so on
 
@@ -89,7 +94,7 @@ def cleanMessage(message, stop):
 ### End Usless Functions
 
 ############################################################ Classification ##########################################################
-def buildTrainingetList(tList, vList, infile):
+def buildSetList(tList, vList, infile):
     fileRead = open(infile, 'r')
     labels = fileRead.read().splitlines()
     fileRead.close()
@@ -140,23 +145,29 @@ def onlineBinaryClassifierTesting(tVector, iters, tList):
 ################################################################ Main ################################################################
 
 def main():
+    #Cooking Training
+    print("Cookie Training")
     messageList = populateMessageList(trainingCookieMessages)
     wordList = uniqueWords(trainingCookieMessages)
     wordList = cleanWordList(wordList, stopWords)
-
-    buildVectorList(wordList, vectorList, messageList)
-
-    buildTrainingetList(trainingSetsList, vectorList, trainingCookieLabels)
-    #print(trainingSetsList)
-
-    finalWeights = onlineBinaryClassifierLearning(trainingSetsList, wordList, trainedVector, 20)
-    print(finalWeights)
+    buildVectorList(wordList, trainingVectorList, messageList)
+    buildSetList(trainingSetsList, trainingVectorList, trainingCookieLabels)
+    finalCookieWeights = onlineBinaryClassifierLearning(trainingSetsList, wordList, trainedVector, 20)
+    print(finalCookieWeights)
     print(missList)
+    cookieTestAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
+    print(cookieTestAccuracy)
 
-    cookieTestAccuacy = onlineBinaryClassifierTesting(finalWeights, 20, trainingSetsList)
-    print(cookieTestAccuacy)
-    #print(len(finalWeights))
-    #print(len(wordList))
+    #Cookie Testing
+    print("Cookie Testing")
+    messageList = populateMessageList(testingCookieMessages)
+    wordList = uniqueWords(testingCookieMessages)
+    wordList = cleanWordList(wordList, stopWords)
+    buildVectorList(wordList, testingVectorList, messageList)
+    buildSetList(testingSetsList, testingVectorList, testingCookieLabels)
+    cookieTrainingAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, testingSetsList)
+    print(cookieTrainingAccuracy)
+
 
 
 if __name__ == "__main__":
