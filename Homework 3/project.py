@@ -129,7 +129,10 @@ def onlineBinaryClassifierTesting(tVector, iters, tList):
         for sets in tList:
             xSubT = np.array(sets[0])
             yHat = xSubT.dot(w)
-            
+            if yHat > 0:
+                hits += 1
+        accuracy.append(hits / len(tVector))
+    return accuracy
 
 
 
@@ -150,6 +153,10 @@ def main():
     print(finalWeights)
     print(missList)
 
+    cookieTestAccuacy = onlineBinaryClassifierTesting(finalWeights, 20, trainingSetsList)
+    print(cookieTestAccuacy)
+    #print(len(finalWeights))
+    #print(len(wordList))
 
 
 if __name__ == "__main__":
