@@ -156,17 +156,15 @@ def main():
     print(finalCookieWeights)
     print(missList)
     cookieTestAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
-    print(cookieTestAccuracy)
+    print(cookieTestAccuracy[0])
 
     #Cookie Testing
     print("Cookie Testing")
     messageList = populateMessageList(testingCookieMessages)
-    wordList = uniqueWords(testingCookieMessages)
-    wordList = cleanWordList(wordList, stopWords)
     buildVectorList(wordList, testingVectorList, messageList)
     buildSetList(testingSetsList, testingVectorList, testingCookieLabels)
     cookieTrainingAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, testingSetsList)
-    print(cookieTrainingAccuracy)
+    print(cookieTrainingAccuracy[0])
 
 
 
