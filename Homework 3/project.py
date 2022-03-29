@@ -22,6 +22,7 @@ trainingVectorList = []     #A list of all the vectors of size M, for each messa
 testingVectorList = []      #A list of all the vectors of size M, for each message
 trainedVector = []          #A vector containing all the trained weights after learning algorithm
 missList = []               #stores the count of misses for each iter. missList[0] will hold the total misses for iter 1 and so on
+cookieWeightsLives = []     #A list of tuples (weight[i], c[i]) where i is the index in the list
 
 learningRate = 1            #For Online Binary-Classifier Learning Alg.
 
@@ -107,21 +108,21 @@ def onlineBinaryClassifierLearning(tList, wList, tVector, iters):
     for word in wList:
         tVector.append(0)
 
-    
-
     w = np.array(tVector)
     for i in range(iters):                                              #for each training iteration itr ∈ {1, 2, · · · , T } do
         misses = 0
         for sets in tList:                                              #   for each training example (xt, yt) ∈ D do
-            #print(sets[0])
+            lives = 1
             xSubT = np.array(sets[0])
             yHat = xSubT.dot(w)                                         #       yHat = sign(w · xt) // predict using the current weights
             if yHat <= 0:                                               #       if mistake then
+                cookieWeightsLives.append((w,lives))
                 ySubT = np.array(sets[1])
                 w = w + learningRate * (ySubT * xSubT)                  #           w = w + η · yt · xt // update the weights
                 misses += 1
-                #w = (ySubT * xSubT)
-                #print(w)
+                lives = 1
+            else:
+                lives += 1
         missList.append(misses)
     return w
 
@@ -155,6 +156,7 @@ def main():
     finalCookieWeights = onlineBinaryClassifierLearning(trainingSetsList, wordList, trainedVector, 20)
     print(finalCookieWeights)
     print(missList)
+    print(len(cookieWeightsLives))
     cookieTestAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
     print(cookieTestAccuracy[0])
 
