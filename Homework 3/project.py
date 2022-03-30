@@ -119,7 +119,7 @@ def onlineBinaryClassifierLearning(tList, wList, tVector, iters):
             xSubT = np.array(sets[0])
             yHat = xSubT.dot(w)                                         #       yHat = sign(w · xt) // predict using the current weights
             if yHat <= 0:                                               #       if mistake then
-                cookieWeightsLives.append((w,lives, i + 1))
+                #cookieWeightsLives.append((w,lives, i + 1))
                 ySubT = np.array(sets[1])
                 w = w + learningRate * (ySubT * xSubT)                  #           w = w + η · yt · xt // update the weights
                 misses += 1
@@ -129,6 +129,27 @@ def onlineBinaryClassifierLearning(tList, wList, tVector, iters):
         missList.append(misses)
         iterationWeights.append(w)
     return w
+
+def averagedPerceptron(tList, wList, tVector, iters):
+    avgW = np.array(tVector)
+
+    for i in range(iters):
+        totalW = avgW
+        for sets in tList:
+            lives = 1
+            xSubT = np.array(sets[0])
+            yHat = xSubT.dot(totalW)
+            if yHat <= 0:
+                cookieWeightsLives.append((avgW, lives))
+                ySubT = np.array(sets[1])
+                avgW = avgW + learningRate * (ySubT * xSubT)
+                totalW += avgW
+                lives = 1
+            else:
+                lives += 1
+    return avgW
+
+
 
 
 def onlineBinaryClassifierTesting(tVector, iters, tList):
@@ -145,11 +166,15 @@ def onlineBinaryClassifierTesting(tVector, iters, tList):
     return accuracy
 
 
-def reportResult(cookieTestAcc, cookieTrainAcc):
+def reportResult(iters, cookieTestAcc, cookieTrainAcc):
     output = open(outFile, 'w')
 
     for i in range(len(missList)):
         output.write(str(missList[i]) + "\n")
+
+    for i in range(iters):
+        output.write(str(cookieTrainAcc[i]) + " ")
+        output.write(str(cookieTestAcc[i]) + "\n")
 
 
 ################################################################ Main ################################################################
@@ -163,11 +188,13 @@ def main():
     buildVectorList(wordList, trainingVectorList, messageList)
     buildSetList(trainingSetsList, trainingVectorList, trainingCookieLabels)
     finalCookieWeights = onlineBinaryClassifierLearning(trainingSetsList, wordList, trainedVector, 20)
+    avgCookieWeights = averagedPerceptron(trainingSetsList, wordList, trainedVector, 20)
     print(finalCookieWeights)
     print(missList)
     #print(len(cookieWeightsLives))
     cookieTestAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
     print(cookieTestAccuracy[0])
+    print(avgCookieWeights)
 
     #Cookie Testing
     print("Cookie Testing")
@@ -180,7 +207,7 @@ def main():
     #print(cookieWeightsLives)
     #print(len(iterationWeights))
 
-    reportResult(cookieTestAccuracy, cookieTrainingAccuracy)
+    reportResult(20, cookieTestAccuracy, cookieTrainingAccuracy)
 
 
 if __name__ == "__main__":
