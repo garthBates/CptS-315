@@ -166,15 +166,19 @@ def onlineBinaryClassifierTesting(tVector, iters, tList):
     return accuracy
 
 
-def reportResult(iters, cookieTestAcc, cookieTrainAcc):
+def reportResult(iters, cookieTestAccSTD, cookieTrainAccSTD, cookieTrainAccAVG, cookieTestAccAVG):
     output = open(outFile, 'w')
 
     for i in range(len(missList)):
         output.write(str(missList[i]) + "\n")
 
     for i in range(iters):
-        output.write(str(cookieTrainAcc[i]) + " ")
-        output.write(str(cookieTestAcc[i]) + "\n")
+        output.write(str(cookieTrainAccSTD[i]) + " ")
+        output.write(str(cookieTestAccSTD[i]) + "\n")
+
+    output.write(str(cookieTrainAccAVG[-1]) + " ")
+    output.write(str(cookieTestAccAVG[-1]) + " \n")
+
 
 
 ################################################################ Main ################################################################
@@ -192,22 +196,24 @@ def main():
     print(finalCookieWeights)
     print(missList)
     #print(len(cookieWeightsLives))
-    cookieTestAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
-    print(cookieTestAccuracy[0])
-    print(avgCookieWeights)
+    cookieTestAccuracySTD = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
+    cookieTestAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, trainingSetsList)
+    #print(cookieTestAccuracySTD[0])
+    #print(avgCookieWeights)
 
     #Cookie Testing
     print("Cookie Testing")
     messageList = populateMessageList(testingCookieMessages)
     buildVectorList(wordList, testingVectorList, messageList)
     buildSetList(testingSetsList, testingVectorList, testingCookieLabels)
-    cookieTrainingAccuracy = onlineBinaryClassifierTesting(finalCookieWeights, 20, testingSetsList)
-    print(cookieTrainingAccuracy[0])
+    cookieTrainingAccuracySTD = onlineBinaryClassifierTesting(finalCookieWeights, 20, testingSetsList)
+    cookieTrainingAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, testingSetsList)
+    print(cookieTrainingAccuracySTD[0])
 
     #print(cookieWeightsLives)
     #print(len(iterationWeights))
 
-    reportResult(20, cookieTestAccuracy, cookieTrainingAccuracy)
+    reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
 
 
 if __name__ == "__main__":
