@@ -87,10 +87,14 @@ def buildVectorList(wList, vList, mList):
 def cleanOCRMessages(tList):
     tempMessage = []
     for i in range(len(tList)):
-        if tList[i] != "\n":
+        if tList[i] != "\n" and tList[i] != "\t":
             tempMessage = tList[i][5:-4]
             tempMessage = tempMessage + (tList[i][-3])
             tList[i] = tempMessage
+
+    clean = list(filter(('\t').__ne__, tList))
+    return clean
+  
 
 def isVowel(inChar):
     c = inChar.lower()
@@ -98,6 +102,12 @@ def isVowel(inChar):
         return True
     else:
         return False
+
+def buildOCRVector(message):
+    vector = []
+    for i in range(len(message - 1)):
+        vector.append(message[i])
+    return vector
 
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
@@ -237,9 +247,9 @@ def main():
     #Vowel Training
     print("Vowel Training")
     ocrMessageList = populateMessageList(trainingOCR)
-    cleanOCRMessages(ocrMessageList)
+    ocrMessageList = cleanOCRMessages(ocrMessageList)
 
-    print(ocrMessageList[0])
+    print(ocrMessageList)
     #print(ocrMessageList[0][4:])
     #print(ocrMessageList[0][-3])
 
