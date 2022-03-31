@@ -35,6 +35,7 @@ iterationWeights = []       #A list of the final weight after each iteration on 
 #OCR data structures
 ocrMessageList = []         #A list of all messages. Used to clean messages before populating ocrTrainingSetsList
 trainingOCRSetsList = []    #A list of tuples (vector, label) containing all message vectors and their lebel
+trainedOCRVector = []       #A vector containing all the trained weights after learning algorithm
 
 learningRate = 1            #For Online Binary-Classifier Learning Alg. index 0 is iteration 1 index 19 is iteration 20
 
@@ -87,8 +88,11 @@ def buildVectorList(wList, vList, mList):
 def cleanOCRMessages(tList):
     tempMessage = []
     for i in range(len(tList)):
-        if tList[i] != "\n" and tList[i] != "\t":
-            tempMessage = tList[i][5:-4]
+        if tList[i] != "\n" and tList[i] != '\t' and tList[i] != "			":
+            #tempMessage = tList[i][4:-4]
+            tempMessage = tList[i].split("im")
+            tempMessage = tempMessage[1][:-4]
+            #print(tempMessage)
             tempMessage = tempMessage + (tList[i][-3])
             tList[i] = tempMessage
 
@@ -105,8 +109,12 @@ def isVowel(inChar):
 
 def buildOCRVector(message):
     vector = []
-    for i in range(len(message) - 1):
-        vector.append(int(message[i]))
+    #print(message)
+    if message != "\t\t\t":
+        for i in range(len(message) - 1):
+            #print(message[i])
+            vector.append(int(message[i]))
+    print(vector)
     return vector
 
 def buildOCRSetsList(mList, tList):
@@ -266,12 +274,10 @@ def main():
     ocrMessageList = cleanOCRMessages(ocrMessageList)
     buildOCRSetsList(ocrMessageList, trainingOCRSetsList)
     ocrWordList = buildBlankOCRWordList(ocrMessageList[0])
-    print(len(ocrWordList))
-    #print(trainingOCRSetsList)
-
-    #print(ocrMessageList)
-    #print(ocrMessageList[0][4:])
-    #print(ocrMessageList[0][-3])
+    print(trainingOCRSetsList[6])
+    #print((ocrMessageList[0]))
+    #finalOCRweights = onlineBinaryClassifierLearning(trainingOCRSetsList, ocrWordList, trainedOCRVector, 20)
+ 
 
     #reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
 
