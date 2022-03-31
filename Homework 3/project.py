@@ -118,6 +118,13 @@ def buildOCRSetsList(mList, tList):
             label = 0
         tList.append((vector, label))
 
+def buildBlankOCRWordList(message):
+    wordList = []
+    for i in range(len(message)):
+        wordList.append(0)
+
+    return wordList
+
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
     fileRead = open(inputFile, 'r')
@@ -258,6 +265,8 @@ def main():
     ocrMessageList = populateMessageList(trainingOCR)
     ocrMessageList = cleanOCRMessages(ocrMessageList)
     buildOCRSetsList(ocrMessageList, trainingOCRSetsList)
+    ocrWordList = buildBlankOCRWordList(ocrMessageList[0])
+    print(len(ocrWordList))
     #print(trainingOCRSetsList)
 
     #print(ocrMessageList)
