@@ -226,10 +226,11 @@ def onlineBinaryClassifierTesting(tVector, iters, tList):
     return accuracy
 
 
-def reportResult(iters, cookieTestAccSTD, cookieTrainAccSTD, cookieTrainAccAVG, cookieTestAccAVG):
+def reportResult(iters, cookieTestAccSTD, cookieTrainAccSTD, cookieTrainAccAVG, cookieTestAccAVG, ocrTrainAccSTD, ocrTestAccSTD, ocrTrainAccAVG, ocrTestAccAVG):
     output = open(outFile, 'w')
 
-    for i in range(len(missList)):
+    #Cookie Block
+    for i in range(iters):
         output.write(str(missList[i]) + "\n")
 
     for i in range(iters):
@@ -239,6 +240,17 @@ def reportResult(iters, cookieTestAccSTD, cookieTrainAccSTD, cookieTrainAccAVG, 
     output.write(str(cookieTrainAccAVG[-1]) + " ")
     output.write(str(cookieTestAccAVG[-1]) + " \n")
 
+
+    #OCR Block
+    for i in range(iters):
+        output.write(str(missList[i+20]) + "\n")
+
+    for i in range(iters):
+        output.write(str(ocrTrainAccSTD[i]) + " ")
+        output.write(str(ocrTestAccSTD[i]) + "\n")
+
+    output.write(str(ocrTrainAccAVG[-1]) + " ")
+    output.write(str(ocrTestAccAVG[-1]))
 
 
 ################################################################ Main ################################################################
@@ -284,9 +296,11 @@ def main():
     ocrTestAccuracySTD = onlineBinaryClassifierTesting(finalOCRweights, 20, testingOCRSetsList)
     ocrTestAccuracyAVG = onlineBinaryClassifierTesting(avgORCWeights, 20, testingOCRSetsList)
     
+    #print(len(missList))
  
 
-    #reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
+    reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG, 
+                ocrTrainingAccuracySTD, ocrTestAccuracySTD, ocrTrainingAccuracyAVG, ocrTestAccuracyAVG)
 
 
 if __name__ == "__main__":
