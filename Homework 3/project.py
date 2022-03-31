@@ -20,6 +20,7 @@ testingCookieLabels = "../Homework 3/fortune-cookie-data/testlabels.txt"
 trainingOCR = "../Homework 3/OCR-data/ocr_train.txt"
 testingOCR = "../Homework 3/OCR-data/ocr_test.txt"
 
+#Cookie data structures
 trainingSetsList = []       #A list of tuples (vector, label) containing all message vectors and their label
 testingSetsList = []        #A list of tuples (vector, label) containing all message vectors and their label
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
@@ -31,9 +32,15 @@ missList = []               #stores the count of misses for each iter. missList[
 cookieWeightsLives = []     #A list of tuples (weight[i], c[i], iteration) where i is the index in the list
 iterationWeights = []       #A list of the final weight after each iteration on the training alg.
 
+#OCR data structures
+ocrMessageList = []         #A list of all messages. Used to clean messages before populating ocrTrainingSetsList
+trainingOCRSetsList = []    #A list of tuples (vector, label) containing all message vectors and their lebel
+
 learningRate = 1            #For Online Binary-Classifier Learning Alg. index 0 is iteration 1 index 19 is iteration 20
 
 ############################################################ Pre-Processing ##########################################################
+
+##### Cookie Pre-Processing #####
 def populateMessageList(inputFile):
     fileRead = open(inputFile, 'r')
     messages = fileRead.read().splitlines()
@@ -75,6 +82,10 @@ def buildVector(wList, message):
 def buildVectorList(wList, vList, mList):
     for message in mList:
         vList.append(buildVector(wList, message))
+
+##### OCR Pre-Processing #####
+def cleanOCRMessages(tList):
+    return 0
 
 
 ### Begin Usless Functions
@@ -197,8 +208,8 @@ def main():
     buildSetList(trainingSetsList, trainingVectorList, trainingCookieLabels)
     finalCookieWeights = onlineBinaryClassifierLearning(trainingSetsList, wordList, trainedVector, 20)
     avgCookieWeights = averagedPerceptron(trainingSetsList, wordList, trainedVector, 20)
-    print(finalCookieWeights)
-    print(missList)
+    #print(finalCookieWeights)
+    #print(missList)
     cookieTestAccuracySTD = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
     cookieTestAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, trainingSetsList)
 
@@ -210,13 +221,14 @@ def main():
     buildSetList(testingSetsList, testingVectorList, testingCookieLabels)
     cookieTrainingAccuracySTD = onlineBinaryClassifierTesting(finalCookieWeights, 20, testingSetsList)
     cookieTrainingAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, testingSetsList)
-    print(cookieTrainingAccuracySTD[0])
+    #print(cookieTrainingAccuracySTD[0])
 
     #Vowel Training
     print("Vowel Training")
+    ocrMessageList = populateMessageList(trainingOCR)
+    print(ocrMessageList[0])
 
-
-    reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
+    #reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
 
 
 if __name__ == "__main__":
