@@ -96,7 +96,7 @@ def cleanOCRMessages(tList):
             tempMessage = tempMessage + (tList[i][-3])
             tList[i] = tempMessage
 
-    clean = list(filter(('\t').__ne__, tList))
+    clean = list(filter(("\t\t\t").__ne__, tList))
     return clean
   
 
@@ -109,12 +109,10 @@ def isVowel(inChar):
 
 def buildOCRVector(message):
     vector = []
-    #print(message)
     if message != "\t\t\t":
         for i in range(len(message) - 1):
             #print(message[i])
             vector.append(int(message[i]))
-    print(vector)
     return vector
 
 def buildOCRSetsList(mList, tList):
@@ -128,7 +126,7 @@ def buildOCRSetsList(mList, tList):
 
 def buildBlankOCRWordList(message):
     wordList = []
-    for i in range(len(message)):
+    for i in range(len(message)-1):
         wordList.append(0)
 
     return wordList
@@ -272,11 +270,12 @@ def main():
     print("Vowel Training")
     ocrMessageList = populateMessageList(trainingOCR)
     ocrMessageList = cleanOCRMessages(ocrMessageList)
+    #print(ocrMessageList)
     buildOCRSetsList(ocrMessageList, trainingOCRSetsList)
     ocrWordList = buildBlankOCRWordList(ocrMessageList[0])
-    print(trainingOCRSetsList[6])
+    #print(trainingOCRSetsList[6])
     #print((ocrMessageList[0]))
-    #finalOCRweights = onlineBinaryClassifierLearning(trainingOCRSetsList, ocrWordList, trainedOCRVector, 20)
+    finalOCRweights = onlineBinaryClassifierLearning(trainingOCRSetsList, ocrWordList, trainedOCRVector, 20)
  
 
     #reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
