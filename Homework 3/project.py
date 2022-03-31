@@ -85,12 +85,19 @@ def buildVectorList(wList, vList, mList):
 
 ##### OCR Pre-Processing #####
 def cleanOCRMessages(tList):
-    return 0
+    tempMessage = []
+    for i in range(len(tList)):
+        if tList[i] != "\n":
+            tempMessage = tList[i][5:-4]
+            tempMessage = tempMessage + (tList[i][-3])
+            tList[i] = tempMessage
 
 def isVowel(inChar):
     c = inChar.lower()
     if c == 'a' or c == 'e' or c == 'i' or c == 'o' or c == 'u':
         return True
+    else:
+        return False
 
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
@@ -230,7 +237,11 @@ def main():
     #Vowel Training
     print("Vowel Training")
     ocrMessageList = populateMessageList(trainingOCR)
+    cleanOCRMessages(ocrMessageList)
+
     print(ocrMessageList[0])
+    #print(ocrMessageList[0][4:])
+    #print(ocrMessageList[0][-3])
 
     #reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
 
