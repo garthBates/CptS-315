@@ -36,6 +36,8 @@ iterationWeights = []       #A list of the final weight after each iteration on 
 ocrMessageList = []         #A list of all messages. Used to clean messages before populating ocrTrainingSetsList
 trainingOCRSetsList = []    #A list of tuples (vector, label) containing all message vectors and their lebel
 trainedOCRVector = []       #A vector containing all the trained weights after learning algorithm
+testingOCRSetsList = []
+
 
 learningRate = 1            #For Online Binary-Classifier Learning Alg. index 0 is iteration 1 index 19 is iteration 20
 
@@ -251,8 +253,6 @@ def main():
     buildSetList(trainingSetsList, trainingVectorList, trainingCookieLabels)
     finalCookieWeights = onlineBinaryClassifierLearning(trainingSetsList, wordList, trainedVector, 20)
     avgCookieWeights = averagedPerceptron(trainingSetsList, wordList, trainedVector, 20)
-    #print(finalCookieWeights)
-    #print(missList)
     cookieTestAccuracySTD = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
     cookieTestAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, trainingSetsList)
 
@@ -264,18 +264,26 @@ def main():
     buildSetList(testingSetsList, testingVectorList, testingCookieLabels)
     cookieTrainingAccuracySTD = onlineBinaryClassifierTesting(finalCookieWeights, 20, testingSetsList)
     cookieTrainingAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, testingSetsList)
-    #print(cookieTrainingAccuracySTD[0])
 
     #Vowel Training
     print("Vowel Training")
     ocrMessageList = populateMessageList(trainingOCR)
     ocrMessageList = cleanOCRMessages(ocrMessageList)
-    #print(ocrMessageList)
     buildOCRSetsList(ocrMessageList, trainingOCRSetsList)
     ocrWordList = buildBlankOCRWordList(ocrMessageList[0])
-    #print(trainingOCRSetsList[6])
-    #print((ocrMessageList[0]))
     finalOCRweights = onlineBinaryClassifierLearning(trainingOCRSetsList, ocrWordList, trainedOCRVector, 20)
+    avgORCWeights = averagedPerceptron(trainingOCRSetsList, ocrWordList, trainedOCRVector, 20)
+    ocrTrainingAccuracySTD = onlineBinaryClassifierTesting(finalOCRweights, 20, trainingOCRSetsList)
+    ocrTrainingAccuracyAVG = onlineBinaryClassifierTesting(avgORCWeights, 20, trainingOCRSetsList)
+
+    #Vowel Testing
+    print("Vowel Testing")
+    ocrMessageList = populateMessageList(testingOCR)
+    ocrMessageList = cleanOCRMessages(ocrMessageList)
+    buildOCRSetsList(ocrMessageList, testingOCRSetsList)
+    ocrTestAccuracySTD = onlineBinaryClassifierTesting(finalOCRweights, 20, testingOCRSetsList)
+    ocrTestAccuracyAVG = onlineBinaryClassifierTesting(avgORCWeights, 20, testingOCRSetsList)
+    
  
 
     #reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
