@@ -87,6 +87,10 @@ def buildVectorList(wList, vList, mList):
 def cleanOCRMessages(tList):
     return 0
 
+def isVowel(inChar):
+    c = inChar.lower()
+    if c == 'a' or c == 'e' or c == 'i' or c == 'o' or c == 'u':
+        return True
 
 ### Begin Usless Functions
 def cleanMessageList(messages, inputFile):
