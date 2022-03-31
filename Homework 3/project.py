@@ -16,6 +16,10 @@ trainingCookieLabels = "../Homework 3/fortune-cookie-data/trainlabels.txt"
 testingCookieMessages = "../Homework 3/fortune-cookie-data/testdata.txt"
 testingCookieLabels = "../Homework 3/fortune-cookie-data/testlabels.txt"
 
+#Vowel Files
+trainingOCR = "../Homework 3/OCR-data/ocr_train.txt"
+testingOCR = "../Homework 3/OCR-data/ocr_test.txt"
+
 trainingSetsList = []       #A list of tuples (vector, label) containing all message vectors and their label
 testingSetsList = []        #A list of tuples (vector, label) containing all message vectors and their label
 messageList = []            #A list of all the messages. Used to clean messages before populating the trainingSetDict
@@ -195,11 +199,9 @@ def main():
     avgCookieWeights = averagedPerceptron(trainingSetsList, wordList, trainedVector, 20)
     print(finalCookieWeights)
     print(missList)
-    #print(len(cookieWeightsLives))
     cookieTestAccuracySTD = onlineBinaryClassifierTesting(finalCookieWeights, 20, trainingSetsList)
     cookieTestAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, trainingSetsList)
-    #print(cookieTestAccuracySTD[0])
-    #print(avgCookieWeights)
+
 
     #Cookie Testing
     print("Cookie Testing")
@@ -210,8 +212,9 @@ def main():
     cookieTrainingAccuracyAVG = onlineBinaryClassifierTesting(avgCookieWeights, 20, testingSetsList)
     print(cookieTrainingAccuracySTD[0])
 
-    #print(cookieWeightsLives)
-    #print(len(iterationWeights))
+    #Vowel Training
+    print("Vowel Training")
+
 
     reportResult(20, cookieTrainingAccuracySTD, cookieTestAccuracySTD, cookieTestAccuracyAVG, cookieTrainingAccuracyAVG)
 
