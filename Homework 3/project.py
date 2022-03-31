@@ -106,7 +106,7 @@ def isVowel(inChar):
 def buildOCRVector(message):
     vector = []
     for i in range(len(message) - 1):
-        vector.append(message[i])
+        vector.append(int(message[i]))
     return vector
 
 def buildOCRSetsList(mList, tList):
@@ -258,7 +258,7 @@ def main():
     ocrMessageList = populateMessageList(trainingOCR)
     ocrMessageList = cleanOCRMessages(ocrMessageList)
     buildOCRSetsList(ocrMessageList, trainingOCRSetsList)
-    print(trainingOCRSetsList)
+    #print(trainingOCRSetsList)
 
     #print(ocrMessageList)
     #print(ocrMessageList[0][4:])
